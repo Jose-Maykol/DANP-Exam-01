@@ -4,40 +4,34 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.view.WindowCompat
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.danpexam01.screens.HomeScreen
+import com.example.danpexam01.screens.LoginScreen
 import com.example.danpexam01.ui.theme.DANPExam01Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        window.statusBarColor = Color.Transparent.toArgb()
+        window.navigationBarColor = Color.Black.toArgb()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         super.onCreate(savedInstanceState)
         setContent {
             DANPExam01Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
+                Scaffold(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    AppNavigation()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    DANPExam01Theme {
-        Greeting("Android")
     }
 }
