@@ -14,6 +14,6 @@ data class Cita (
     val idCita: Int = 0,
     val idPaciente: Int,
     val idMedico: Int,
-    val Fecha: String,
-    val Hora: String
+    val fecha: String,
+    val hora: String
 )

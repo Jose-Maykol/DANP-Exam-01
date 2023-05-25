@@ -43,7 +43,7 @@ fun CitaCard(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
             ) {
                 Text(
-                    text = cita.paciente,
+                    text = cita.fecha,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )

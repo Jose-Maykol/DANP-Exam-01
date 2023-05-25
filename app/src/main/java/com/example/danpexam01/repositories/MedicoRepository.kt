@@ -1,7 +1,7 @@
 package com.example.danpexam01.repositories
 
-import MedicoDao
 import androidx.lifecycle.LiveData
+import com.example.danpexam01.daos.MedicoDao
 import com.example.danpexam01.models.Medico
 
 class MedicoRepository( private val medicoDao: MedicoDao) {

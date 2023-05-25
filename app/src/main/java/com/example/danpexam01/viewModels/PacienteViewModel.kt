@@ -16,5 +16,5 @@ class PacienteViewModel(application: Application) : AndroidViewModel(application
         repository = PacienteRepository(pacienteDao)
         allPacientes = repository.allPacientes
     }
-    
+
 }

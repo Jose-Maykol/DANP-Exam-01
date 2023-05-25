@@ -1,15 +1,10 @@
 package com.example.danpexam01.viewModels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.danpexam01.DatabaseCitas
-import com.example.danpexam01.daos.CitaDao
 import com.example.danpexam01.models.Cita
 import com.example.danpexam01.repositories.CitaRepository
-import kotlinx.coroutines.launch
 
 class CitaViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -21,5 +16,15 @@ class CitaViewModel(application: Application) : AndroidViewModel(application) {
         repository = CitaRepository(citaDao)
         allCitas = repository.allCitas
     }
+}
 
+class CitaViewModelFactory(
+    private val application: Application
+    ) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CitaViewModel::class.java)) {
+            return CitaViewModel(application) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

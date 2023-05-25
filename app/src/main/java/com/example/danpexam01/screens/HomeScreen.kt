@@ -1,5 +1,7 @@
 package com.example.danpexam01.screens
 
+import android.app.Application
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -9,13 +11,17 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.danpexam01.components.CitaCard
-import com.example.danpexam01.models.Cita
+import com.example.danpexam01.viewModels.CitaViewModel
+import com.example.danpexam01.viewModels.CitaViewModelFactory
 
 @Composable
 fun HomeScreen(
@@ -26,7 +32,7 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Nombre de la aplicacion :'v",
+                        text = "Nombre de la aplicacion",
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentSize(Alignment.Center)
@@ -46,12 +52,23 @@ fun HomeScreen(
             )
         }
     ) {
-        val citas = listOf(
-            Cita(1, "Paciente 1", "2023-05-25", "10:00 AM"),
-            Cita(2, "Paciente 2", "2023-05-26", "11:30 AM"),
-            Cita(3, "Paciente 3", "2023-05-27", "2:15 PM"),
-            Cita(4, "Paciente 4", "2023-05-28", "4:45 PM"),
+        val context = LocalContext.current
+        val mCitaViewModel: CitaViewModel = viewModel(
+            factory = CitaViewModelFactory(context.applicationContext as Application)
         )
+
+        val citas = mCitaViewModel.allCitas.observeAsState(listOf()).value
+
+        Log.i("CITAS", citas.toString())
+
+        if (citas.isEmpty()) {
+            Text(
+                text = "No hay citas",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center)
+            )
+        }
 
         LazyColumn(
             modifier = Modifier.fillMaxWidth()

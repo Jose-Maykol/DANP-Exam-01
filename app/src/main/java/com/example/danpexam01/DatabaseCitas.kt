@@ -1,10 +1,11 @@
 package com.example.danpexam01
 
-import MedicoDao
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.danpexam01.daos.MedicoDao
 import com.example.danpexam01.daos.CitaDao
 import com.example.danpexam01.daos.PacienteDao
 import com.example.danpexam01.models.Cita
