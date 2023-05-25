@@ -1,23 +1,17 @@
-package com.example.danpexam01.components
-
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.danpexam01.models.Paciente
-import java.lang.reflect.Modifier
 import java.util.*
-import java.util.Calendar;
-
 
 @Composable
 fun HacerCita(listaPacientes: MutableList<Paciente>) {
@@ -30,45 +24,44 @@ fun HacerCita(listaPacientes: MutableList<Paciente>) {
 
 @Composable
 fun formCita(paciente: Paciente){
-    var idPaciente: String,
-    var nombre: String,
-    var apellido: String,
-    var genero: String,
-    var fechaNacimiento: String,
-    var telefono: String,
-    var direccion: String,
-    var email: String,
-    var descripcion: String
-    var fechaCita: String,
-    var horaCita: String,
+
+    var idPaciente by remember { mutableStateOf("") }
+    var nombre by remember { mutableStateOf("") }
+    var apellido by remember { mutableStateOf("") }
+    var genero by remember { mutableStateOf("") }
+    var fechaNacimiento by remember { mutableStateOf("") }
+    var telefono by remember { mutableStateOf("") }
+    var direccion by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var descripcion by remember { mutableStateOf("") }
+    var fechaCita by remember { mutableStateOf("") }
+    var horaCita by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(12.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth().fillMaxHeight()
-        ) {
-            nombre = paciente.nombre,
-            apellido = paciente.apellido,
-            genero = paciente.genero,
-            fechaNacimiento = paciente.fechaNacimiento,
-            telefono = paciente.telefono,
-            direccion = paciente.direccion,
-            email = paciente.email
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = descripcion,
-                keyboardOptions = KeyboardOptions(keyboardType =
-                KeyboardType.Text),
-                singleLine = true,
-                maxLines = 1,
-                onValueChange = descripcion,
-                label = { Text(text = "Motivo de cita") }
-            )
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
-            DatePicker(fechaCita)
-            DateTimePicker(horaCita)
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        }
+        nombre = paciente.nombre
+        apellido = paciente.apellido
+        genero = paciente.genero
+        fechaNacimiento = paciente.fechaNacimiento
+        telefono = paciente.telefono
+        direccion = paciente.direccion
+        email = paciente.email
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = descripcion,
+            keyboardOptions = KeyboardOptions(keyboardType =
+            KeyboardType.Text),
+            singleLine = true,
+            maxLines = 1,
+            onValueChange = { descripcion = it },
+            label = { Text(text = "Motivo de cita") }
+        )
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        DatePicker(fechaCita)
+        DateTimePicker(horaCita)
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
     }
 }
 @Composable
@@ -106,4 +99,3 @@ fun DateTimePicker(hora: String) {
     )
     timePickerDialog.show()
 }
-
