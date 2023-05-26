@@ -3,9 +3,12 @@ package com.example.danpexam01.viewModels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.danpexam01.DatabaseCitas
-import com.example.danpexam01.daos.CitaWithPacienteAndMedico
+import com.example.danpexam01.models.CitaWithPacienteAndMedico
 import com.example.danpexam01.models.Cita
 import com.example.danpexam01.repositories.CitaRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CitaViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -18,6 +21,12 @@ class CitaViewModel(application: Application) : AndroidViewModel(application) {
         repository = CitaRepository(citaDao)
         allCitas = repository.allCitas
         allCitasComplete = repository.allCitasComplete
+    }
+
+    suspend fun getCita(idCita: Int): LiveData<CitaWithPacienteAndMedico> {
+        return withContext(Dispatchers.IO) {
+            repository.getCita(idCita)
+        }
     }
 }
 

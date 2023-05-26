@@ -38,7 +38,7 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Nombre de la aplicacion",
+                        text = "TUS CITAS",
                         modifier = Modifier
                             .fillMaxWidth()
                             .wrapContentSize(Alignment.Center)
@@ -67,8 +67,6 @@ fun HomeScreen(
 
         val citas = mCitaViewModel.allCitasComplete.observeAsState(listOf()).value
 
-        Log.i("HomeScreen", "userId: $userId")
-        Log.i("HomeScreen", "citas: $citas")
         val citasFiltradas = citas.filter { cita ->
             cita.paciente.idPaciente == userId
         }
@@ -86,7 +84,10 @@ fun HomeScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             items(citasFiltradas) { cita ->
-                CitaCard(cita)
+                CitaCard(
+                    cita = cita,
+                    navController = navController
+                )
             }
         }
     }

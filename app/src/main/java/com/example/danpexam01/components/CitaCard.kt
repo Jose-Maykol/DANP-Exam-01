@@ -1,6 +1,7 @@
 package com.example.danpexam01.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -13,13 +14,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
-import com.example.danpexam01.daos.CitaWithPacienteAndMedico
-import com.example.danpexam01.models.Cita
+import com.example.danpexam01.models.CitaWithPacienteAndMedico
 
 @Composable
 fun CitaCard(
-    cita: CitaWithPacienteAndMedico
+    cita: CitaWithPacienteAndMedico,
+    navController: NavHostController? = null
 ) {
     Card(
         backgroundColor = MaterialTheme.colors.primary,
@@ -28,6 +30,9 @@ fun CitaCard(
             .height(150.dp)
             .padding(horizontal = 16.dp, vertical = 16.dp)
             .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = {
+                navController?.navigate("detail_screen/${cita.cita.idCita}")
+            })
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,

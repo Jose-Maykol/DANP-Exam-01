@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.danpexam01.models.Cita
-import kotlinx.coroutines.flow.Flow
+import com.example.danpexam01.models.CitaWithPacienteAndMedico
 
 @Dao
 interface CitaDao {
@@ -19,4 +19,10 @@ interface CitaDao {
             "INNER JOIN pacientes ON citas.idPaciente = pacientes.idPaciente " +
             "INNER JOIN medicos ON citas.idMedico = medicos.idMedico")
     fun getAllCitasComplete(): LiveData<List<CitaWithPacienteAndMedico>>
+
+    @Query("SELECT * FROM citas " +
+            "INNER JOIN pacientes ON citas.idPaciente = pacientes.idPaciente " +
+            "INNER JOIN medicos ON citas.idMedico = medicos.idMedico " +
+            "WHERE citas.idCita = :idCita")
+    fun getCita (idCita: Int): LiveData<CitaWithPacienteAndMedico>
 }

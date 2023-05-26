@@ -1,4 +1,4 @@
-package com.example.danpexam01.daos
+package com.example.danpexam01.models
 
 import androidx.room.Embedded
 import androidx.room.Ignore
