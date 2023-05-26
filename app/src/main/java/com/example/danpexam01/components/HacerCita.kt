@@ -1,17 +1,25 @@
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavHostController
 import com.example.danpexam01.models.Paciente
 import java.util.*
@@ -52,7 +60,14 @@ fun HacerCita(
             )
         }
     ) {
-        formCita()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(12.dp)
+        ) {
+            formCita()
+        }
     }
 }
 @Composable
@@ -74,7 +89,7 @@ fun formCita(){
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(12.dp)
+            .padding(14.dp)
     ) { /*nombre = paciente.nombre
         apellido = paciente.apellido
         genero = paciente.genero
@@ -83,20 +98,10 @@ fun formCita(){
         direccion = paciente.direccion
         email = paciente.email*/
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = doctor,
-            keyboardOptions = KeyboardOptions(keyboardType =
-            KeyboardType.Text),
-            singleLine = true,
-            maxLines = 1,
-            onValueChange = { doctor = it },
-            label = { Text(text = "Médico a realizar atención") }
-        )
-        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        ElegirDoctor(doctor)
         DatePicker(fechaCita)
-        DateTimePicker(horaCita)
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        DateTimePicker(horaCita)
     }
 }
 @Composable
@@ -115,7 +120,26 @@ fun DatePicker(fecha: String) {
             fecha = "$day/${month + 1}/$year"
         }, year, month, day
     )
-    cDatePickerDialog.show()
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.align(Alignment.Center)) {
+            OutlinedTextField(
+                value = fecha,
+                onValueChange = { fecha = it },
+                readOnly = true,
+                label = { Text(text = "Fecha de la cita") }
+            )
+            Icon(
+                imageVector = Icons.Filled.DateRange,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(4.dp)
+                    .clickable {
+                        cDatePickerDialog.show()
+                    }
+            )
+        }
+    }
 }
 
 
@@ -132,8 +156,77 @@ fun DateTimePicker(hora: String) {
             hora = "$horas:$minutos"
         }, horas, minutos, false
     )
-    timePickerDialog.show()
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.align(Alignment.Center)) {
+            OutlinedTextField(
+                value = hora,
+                onValueChange = { hora = it },
+                readOnly = true,
+                label = { Text(text = "Hora de la cita") }
+            )
+            Icon(
+                imageVector = Icons.Filled.DateRange,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(60.dp)
+                    .padding(4.dp)
+                    .clickable {
+                        timePickerDialog.show()
+                    }
+            )
+        }
+    }
 }
+
+@Composable
+fun ElegirDoctor(doctor: String) {
+    var expanded by remember { mutableStateOf(false) }
+    val doctoresCombo = arrayOf("Dr. Daniel Ventura", "Dra. Rafaela Vera", "Dra. Carmen Expresso", "Dr. Manuel Carrasco", "Dr. Carlos Conde")
+    var doctor by remember { mutableStateOf("") }
+    var textfieldSize by remember { mutableStateOf("")}
+
+    val icon = if (expanded)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+    Column(Modifier.padding(1.dp)) {
+        OutlinedTextField(
+            value = doctor,
+            onValueChange = { doctor = it },
+            readOnly = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .onGloballyPositioned { coordinates ->
+                    //This value is used to assign to the DropDown the same width
+                    textfieldSize = coordinates.size
+                        .toSize()
+                        .toString()
+                },
+            label = {Text("Label")},
+            trailingIcon = {
+                Icon(icon,"contentDescription",
+                    Modifier.clickable { expanded = !expanded })
+            }
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .width(IntrinsicSize.Max)
+        ) {
+            doctoresCombo.forEach { label ->
+                DropdownMenuItem(onClick = {
+                    doctor = label
+                    expanded = false
+                }) {
+                    Text(text = label)
+                }
+            }
+        }
+    }
+}
+
 /*fun agregarCita(idPaciente: String, listaPacientes: MutableList<Paciente>, listaCita: MutableList<Cita>) {
     listaPacientes.add(Cita())
 }*/
