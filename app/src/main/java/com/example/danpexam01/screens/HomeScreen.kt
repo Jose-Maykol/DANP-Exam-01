@@ -42,7 +42,9 @@ fun HomeScreen(
                 modifier = Modifier.padding(top = 32.dp),
                 elevation = 0.dp,
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(
+                        onClick = { navController?.navigate("hacerCita_screen")}
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = "Logout"
