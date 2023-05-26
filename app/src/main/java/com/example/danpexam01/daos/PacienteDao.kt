@@ -11,12 +11,6 @@ interface PacienteDao {
     @Insert
     suspend fun insertPaciente(paciente: Paciente)
 
-    @Query("UPDATE pacientes set nombre=:nombre WHERE idPaciente=:idPaciente")
-    suspend fun actualizarPaciente(idPaciente: Int, nombre: String)
-
-    @Query("DELETE FROM pacientes WHERE idPaciente=:idPaciente")
-    suspend fun borrarPaciente(idPaciente: Int)
-
     @Query("SELECT * FROM pacientes")
     fun getAllPacientes(): LiveData<List<Paciente>>
 

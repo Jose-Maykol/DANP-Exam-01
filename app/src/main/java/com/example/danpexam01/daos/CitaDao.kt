@@ -14,7 +14,9 @@ interface CitaDao {
 
     @Query("SELECT * FROM citas")
     fun getAllCitas(): LiveData<List<Cita>>
-/*
-    @Query("SELECT citas.idCita, pacientes.idPaciente AS pacienteId, medicos.idMedico AS medicoId FROM citas INNER JOIN pacientes ON citas.idPaciente = pacientes.idPaciente INNER JOIN medicos ON citas.idCita = medicos.idMedico")
-    fun getAllCitasComplete(): LiveData<List<Cita>>*/
+
+    @Query("SELECT * FROM citas " +
+            "INNER JOIN pacientes ON citas.idPaciente = pacientes.idPaciente " +
+            "INNER JOIN medicos ON citas.idMedico = medicos.idMedico")
+    fun getAllCitasComplete(): LiveData<List<CitaWithPacienteAndMedico>>
 }

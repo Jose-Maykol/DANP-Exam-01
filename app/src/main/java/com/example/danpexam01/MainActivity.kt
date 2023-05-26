@@ -1,5 +1,6 @@
 package com.example.danpexam01
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +13,7 @@ import androidx.core.view.WindowCompat
 import com.example.danpexam01.ui.theme.DANPExam01Theme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         window.statusBarColor = Color.Transparent.toArgb()

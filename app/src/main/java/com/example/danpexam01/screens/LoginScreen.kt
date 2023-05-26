@@ -1,6 +1,7 @@
 package com.example.danpexam01.screens
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import androidx.navigation.NavHostController
 import com.example.danpexam01.models.Paciente
 import com.example.danpexam01.viewModels.PacienteViewModel
 import com.example.danpexam01.viewModels.PacienteViewModelFactory
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun LoginScreen(
@@ -39,6 +41,9 @@ fun LoginScreen(
     )
     val paciente: Paciente? by mPacienteViewModel.pacienteLiveData.observeAsState(null)
     mPacienteViewModel.getPacienteByEmail(email)
+
+    val pacienteId: MutableStateFlow<Int?> = MutableStateFlow(null)
+    val sharedPreferences = context.getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
 
     Column(
         modifier = Modifier
@@ -78,11 +83,11 @@ fun LoginScreen(
 
         Button(
             onClick = {
-                Log.i("LoginScreen", "Email: $email")
                 mPacienteViewModel.getPacienteByEmail(email)
-                Log.i("LoginScreen", "Paciente: $paciente")
                 if (paciente != null) {
                     if (paciente?.password == password) {
+                        sharedPreferences.edit().putInt("userId", paciente?.idPaciente!!).apply()
+                        Log.i("LoginScreen", "userId: ${paciente?.idPaciente!!}")
                         navController?.navigate("home_screen")
                     } else {
                         Toast.makeText(context, "Contraseña incorrecta", Toast.LENGTH_SHORT).show()

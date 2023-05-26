@@ -14,11 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.example.danpexam01.daos.CitaWithPacienteAndMedico
 import com.example.danpexam01.models.Cita
 
 @Composable
 fun CitaCard(
-    cita: Cita
+    cita: CitaWithPacienteAndMedico
 ) {
     Card(
         backgroundColor = MaterialTheme.colors.primary,
@@ -43,17 +44,21 @@ fun CitaCard(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
             ) {
                 Text(
-                    text = cita.fecha,
+                    text = cita.medico.nombre,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Fecha: ${cita.fecha}",
+                    text = "Especialidad: ${cita.medico.especialidad}",
+                    fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
                 Text(
-                    text = "Hora: ${cita.hora}",
+                    text = "Fecha: ${cita.cita.fecha}",
+                    color = Color.White
+                )
+                Text(
+                    text = "Hora: ${cita.cita.hora}",
                     color = Color.White
                 )
             }

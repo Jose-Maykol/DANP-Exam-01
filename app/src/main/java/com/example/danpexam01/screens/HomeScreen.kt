@@ -1,6 +1,8 @@
 package com.example.danpexam01.screens
 
 import android.app.Application
+import android.content.Context
+import android.preference.PreferenceManager
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +29,10 @@ import com.example.danpexam01.viewModels.CitaViewModelFactory
 fun HomeScreen(
     navController: NavHostController
 ) {
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+    val userId = sharedPreferences.getInt("userId", 0)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -59,11 +65,15 @@ fun HomeScreen(
             factory = CitaViewModelFactory(context.applicationContext as Application)
         )
 
-        val citas = mCitaViewModel.allCitas.observeAsState(listOf()).value
+        val citas = mCitaViewModel.allCitasComplete.observeAsState(listOf()).value
 
-        Log.i("CITAS", citas.toString())
+        Log.i("HomeScreen", "userId: $userId")
+        Log.i("HomeScreen", "citas: $citas")
+        val citasFiltradas = citas.filter { cita ->
+            cita.paciente.idPaciente == userId
+        }
 
-        if (citas.isEmpty()) {
+        if (citasFiltradas.isEmpty()) {
             Text(
                 text = "No hay citas",
                 modifier = Modifier
@@ -75,7 +85,7 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(citas) { cita ->
+            items(citasFiltradas) { cita ->
                 CitaCard(cita)
             }
         }
