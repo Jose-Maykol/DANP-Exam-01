@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -21,15 +22,7 @@ import java.util.*
 
 @Composable
 fun HacerCita(navController: NavHostController) {
-    /*var fecha by remember { mutableStateOf("") }
-    var hora by remember { mutableStateOf("") }
-    var isEditando by remember { mutableStateOf(false) }
-    var textButton by remember { mutableStateOf("Guardar") }
 
-    ///formCita(navController?.navigate("hacerCita_screen")
-}
-@Composable
-public fun formCita(navController: Unit){*/
     val paciente = remember { mutableStateListOf<Paciente>() }
     var idPaciente by remember { mutableStateOf("") }
     var nombre by remember { mutableStateOf("") }
@@ -135,7 +128,7 @@ fun DateTimePicker(hora: String) {
                 label = { Text(text = "Hora de la cita") }
             )
             Icon(
-                imageVector = Icons.Filled.DateRange,
+                imageVector = Icons.Filled.CheckCircle,
                 contentDescription = null,
                 modifier = Modifier
                     .size(60.dp)
