@@ -1,5 +1,6 @@
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
@@ -43,7 +45,9 @@ public fun formCita(navController: Unit){*/
     var guardar by remember { mutableStateOf("Guardar") }
 
     Column(
-        modifier = Modifier.padding(32.dp).fillMaxHeight(),
+        modifier = Modifier
+            .padding(32.dp)
+            .fillMaxHeight(),
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -57,15 +61,17 @@ public fun formCita(navController: Unit){*/
         telefono = paciente.telefono,
         direccion = paciente.direccion,
         email = paciente.email,*/
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+
         Button(
             onClick = {
                 navController?.navigate("home_screen")
             },
             modifier = Modifier.fillMaxWidth()
         ) {
+            ConfirmarCita()
             Text(text = "Registrar")
         }
-        ///Spacer(modifier = Modifier.padding(vertical = 4.dp))
     }
 }
 @Composable
@@ -153,7 +159,10 @@ fun ElegirDoctor(doctor: String) {
     else
         Icons.Filled.KeyboardArrowDown
 
-    Column(Modifier.padding(0.dp).fillMaxWidth()) {
+    Column(
+        Modifier
+            .padding(0.dp)
+            .fillMaxWidth()) {
         OutlinedTextField(
             value = doctor,
             onValueChange = { doctor = it },
@@ -185,6 +194,40 @@ fun ElegirDoctor(doctor: String) {
     }
 }
 
+@Composable
+fun ConfirmarCita(){
+    val context = LocalContext.current
+    val openDialog = remember { mutableStateOf(true) }
+
+    if (openDialog.value){
+        AlertDialog(
+            onDismissRequest = { openDialog.value = false },
+            title = { Text(text = "Confirmar cita", color = Color.Black) },
+            text = { Text(text = "¿Está seguro(a) que quiere reservar esta cita médica?", color = Color.Black) },
+
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false
+                        Toast.makeText(context, "Reserva de cita confirmada", Toast.LENGTH_SHORT).show()
+                    }) {
+                    Text(text = "Sí", color = Color.Black)
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        openDialog.value = false
+                        Toast.makeText(context, "Reserva de cita cancelada", Toast.LENGTH_SHORT).show()
+                    }) {
+                    Text(text = "No, cancelar", color = Color.Black)
+                }
+            },
+            backgroundColor = Color.White,
+            contentColor = Color.White
+        )
+    }
+}
 /*fun agregarCita(idPaciente: String, listaPacientes: MutableList<Paciente>, listaCita: MutableList<Cita>) {
     listaPacientes.add(Cita())
 }*/
