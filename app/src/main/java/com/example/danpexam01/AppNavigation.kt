@@ -1,5 +1,6 @@
 package com.example.danpexam01
 
+import HacerCita
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,6 +21,9 @@ fun AppNavigation() {
         }
         composable(AppScreens.HomeScreen.route) {
             HomeScreen(navController = navController)
+        }
+        composable(AppScreens.HacerCita.route) {
+            HacerCita(navController = navController)
         }
     }
 }
