@@ -5,6 +5,7 @@ sealed class AppScreens (
 ) {
     object LoginScreen: AppScreens("login_screen")
     object HomeScreen: AppScreens("home_screen")
+    object RegisterScreen: AppScreens("register_screen")
     object HacerCita: AppScreens("hacerCita_screen")
 }
 

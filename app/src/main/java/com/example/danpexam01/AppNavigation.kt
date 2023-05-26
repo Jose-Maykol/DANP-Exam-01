@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.danpexam01.screens.HomeScreen
 import com.example.danpexam01.screens.LoginScreen
+import com.example.danpexam01.screens.RegisterScreen
 
 @Composable
 fun AppNavigation() {
@@ -24,6 +25,9 @@ fun AppNavigation() {
         }
         composable(AppScreens.HacerCita.route) {
             HacerCita(navController = navController)
+        }
+        composable(AppScreens.RegisterScreen.route) {
+            RegisterScreen(navController = navController)
         }
     }
 }
