@@ -1,5 +1,8 @@
 package com.example.danpexam01.screens
 
+import android.app.Application
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -7,15 +10,21 @@ import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.danpexam01.models.Paciente
+import com.example.danpexam01.viewModels.PacienteViewModel
+import com.example.danpexam01.viewModels.PacienteViewModelFactory
 
 @Composable
 fun LoginScreen(
@@ -23,6 +32,13 @@ fun LoginScreen(
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+    val mPacienteViewModel: PacienteViewModel = viewModel(
+        factory = PacienteViewModelFactory(context.applicationContext as Application)
+    )
+    val paciente: Paciente? by mPacienteViewModel.pacienteLiveData.observeAsState(null)
+    mPacienteViewModel.getPacienteByEmail(email)
 
     Column(
         modifier = Modifier
@@ -62,6 +78,18 @@ fun LoginScreen(
 
         Button(
             onClick = {
+                Log.i("LoginScreen", "Email: $email")
+                mPacienteViewModel.getPacienteByEmail(email)
+                Log.i("LoginScreen", "Paciente: $paciente")
+                if (paciente != null) {
+                    if (paciente?.password == password) {
+                        navController?.navigate("home_screen")
+                    } else {
+                        Toast.makeText(context, "Contraseña incorrecta", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Usuario no encontrado", Toast.LENGTH_SHORT).show()
+                }
                 navController?.navigate("home_screen")
             },
             modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp))

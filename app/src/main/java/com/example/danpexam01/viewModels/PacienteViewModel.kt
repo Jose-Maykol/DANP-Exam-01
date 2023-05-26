@@ -9,7 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PacienteViewModel(application: Application) : AndroidViewModel(application) {
+
     val allPacientes: LiveData<List<Paciente>>
+    val pacienteLiveData: LiveData<Paciente> = MutableLiveData<Paciente>()
+
     private val repository: PacienteRepository
 
     init {
@@ -21,6 +24,13 @@ class PacienteViewModel(application: Application) : AndroidViewModel(application
     fun insertPaciente(paciente: Paciente) {
         viewModelScope.launch (Dispatchers.IO){
             repository.insertPaciente(paciente)
+        }
+    }
+
+    fun getPacienteByEmail(email: String) {
+        viewModelScope.launch (Dispatchers.IO) {
+            val paciente = repository.getPacienteByEmail(email)
+            (pacienteLiveData as MutableLiveData<Paciente>).postValue(paciente)
         }
     }
 }

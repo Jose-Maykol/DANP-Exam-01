@@ -20,4 +20,6 @@ interface PacienteDao {
     @Query("SELECT * FROM pacientes")
     fun getAllPacientes(): LiveData<List<Paciente>>
 
+    @Query("SELECT * FROM pacientes WHERE email=:email")
+    fun getPacienteByEmail(email: String): Paciente?
 }

@@ -3,13 +3,18 @@ package com.example.danpexam01.screens
 import android.app.Application
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -38,7 +43,7 @@ fun RegisterScreen (
     )
 
     Column(
-        modifier = Modifier.padding(32.dp).fillMaxHeight(),
+        modifier = Modifier.padding(50.dp).fillMaxHeight(),
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -102,28 +107,45 @@ fun RegisterScreen (
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )
 
-        Button(
-            onClick = {
-                val paciente = com.example.danpexam01.models.Paciente(
-                    nombre = nombre,
-                    apellido = apellido,
-                    genero = genero,
-                    fechaNacimiento = fechaNacimiento,
-                    telefono = telefono,
-                    direccion = direccion,
-                    email = email,
-                    password = password
-                )
-                mPacienteViewModel.insertPaciente(paciente)
-                Toast.makeText(context, "Paciente registrado", Toast.LENGTH_SHORT).show()
-                navController?.navigate("login_screen")
-            },
-            modifier = Modifier.fillMaxWidth()
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Text(text = "Registrar")
+            Button(
+                onClick = {
+                    navController?.navigate("home_screen")
+                },
+                modifier = Modifier.clip(RoundedCornerShape(4.dp)).padding(10.dp)
+            ) {
+                Text(text = "Cancelar")
+            }
+            Button(
+                onClick = {
+                    val paciente = com.example.danpexam01.models.Paciente(
+                        nombre = nombre,
+                        apellido = apellido,
+                        genero = genero,
+                        fechaNacimiento = fechaNacimiento,
+                        telefono = telefono,
+                        direccion = direccion,
+                        email = email,
+                        password = password
+                    )
+                    mPacienteViewModel.insertPaciente(paciente)
+                    Toast.makeText(context, "Paciente registrado", Toast.LENGTH_SHORT).show()
+                    navController?.navigate("login_screen")
+                },
+                modifier = Modifier.clip(RoundedCornerShape(4.dp)).padding(10.dp)
+            ) {
+                Text(text = "Registrar")
+            }
         }
     }
 }

@@ -11,4 +11,8 @@ class PacienteRepository(private val pacienteDao: PacienteDao) {
     suspend fun insertPaciente(paciente: Paciente) {
         pacienteDao.insertPaciente(paciente)
     }
+
+    fun getPacienteByEmail(email: String): Paciente? {
+        return pacienteDao.getPacienteByEmail(email)
+    }
 }
